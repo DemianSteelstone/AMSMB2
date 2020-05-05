@@ -719,6 +719,17 @@ public class AMSMB2: NSObject, NSSecureCoding, Codable, NSCopying, CustomReflect
             try self.read(context: context, path: path, to: stream, progress: progress)
         }
     }
+
+    @objc(readableItemAtPath:)
+    open func makeReadableFileHandle(atPath path: String) -> Readable? {
+        do {
+            let file: SMB2FileHandle? = try self.makeReadableFileHandle(context: self.context!, path: path)
+            return file
+        } catch {
+
+        }
+        return nil
+    }
 }
 
 extension AMSMB2 {
@@ -949,6 +960,10 @@ extension AMSMB2 {
         }
         
         try context.rmdir(path)
+    }
+
+    fileprivate func makeReadableFileHandle(context: SMB2Context, path: String) throws -> SMB2FileHandle? {
+        try SMB2FileHandle(forReadingAtPath: path, on: context)
     }
     
     fileprivate func read(context: SMB2Context, path: String, range: Range<Int64> = 0..<Int64.max,

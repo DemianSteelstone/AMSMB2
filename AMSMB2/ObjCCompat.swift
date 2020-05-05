@@ -227,3 +227,40 @@ extension AMSMB2 {
         }
     }
 }
+
+extension SMB2FileHandle: Readable {
+    @objc(seekWithOffset:whence:)
+    public func seek(offset: Int64, whence: Int32) -> Int64 {
+        var result: Int64 = 0
+        do {
+            result = try self.lseek(offset: offset, whence: SeekWhence(rawValue: whence))
+        }
+        catch {
+            print("SMB2FileHandle failed to seek")
+        }
+        return result
+    }
+    @objc(readDataWithLength:)
+    public func readData(length: Int) -> Data? {
+        var result: Data? = nil
+        do {
+            result = try self.read(length: length)
+        }
+        catch {
+            print("SMB2FileHandle failed to read data")
+        }
+        return result
+    }
+    @objc
+    public func size() -> Int64 {
+        var size: Int64 = 0
+        do {
+            size = try Int64(self.fstat().smb2_size)
+        }
+        catch {
+            print("SMB2FileHandle failed to get size")
+        }
+        return size
+    }
+    
+}

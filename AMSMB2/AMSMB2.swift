@@ -726,7 +726,7 @@ public class AMSMB2: NSObject, NSSecureCoding, Codable, NSCopying, CustomReflect
             let file: SMB2FileHandle? = try self.makeReadableFileHandle(context: self.context!, path: path)
             return file
         } catch {
-
+            print("AMSMB failed to create readable at path " + path)
         }
         return nil
     }

@@ -13,4 +13,5 @@ public protocol Readable {
     func seek(offset: Int64, whence: Int32) -> Int64
     func readData(length: Int) -> Data?
     func size() -> Int64
+    func close()
 }

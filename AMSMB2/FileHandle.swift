@@ -136,7 +136,7 @@ final class SMB2FileHandle {
     func lseek(offset: Int64, whence: SeekWhence) throws -> Int64 {
         let handle = try self.handle.unwrap()
         let result = smb2_lseek(context.unsafe, handle, offset, whence.rawValue, nil)
-        try POSIXError.throwIfError(Int32(result), description: context.error)
+        try POSIXError.throwIfError(result, description: context.error)
         return result
     }
     
